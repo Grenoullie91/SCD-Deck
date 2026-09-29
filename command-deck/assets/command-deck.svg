@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1B0D2B"/>
+      <stop offset="1" stop-color="#0B0612"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C084FC"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="url(#bg)"
+        stroke="#8B5CF6" stroke-opacity="0.55" stroke-width="1.5"/>
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="url(#neon)"
+        opacity="0.08"/>
+
+  <!-- Prompt-Zeichen -->
+  <g filter="url(#glow)">
+    <path d="M15 22 L24 30 L15 38" fill="none" stroke="#C084FC"
+          stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <rect x="27" y="34.4" width="20" height="3.2" rx="1.6" fill="#A855F7"/>
+
+  <!-- Trennlinie -->
+  <rect x="13" y="45" width="38" height="1.4" rx="0.7" fill="#6D28D9"
+        opacity="0.75"/>
+
+  <!-- Eckakzent -->
+  <circle cx="52" cy="13" r="2.4" fill="#A855F7" filter="url(#glow)"/>
+</svg>

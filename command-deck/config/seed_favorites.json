@@ -1,0 +1,14 @@
+{
+  "_comment": "Initial ★ Favoriten. Wird beim ersten Start nach ~/.config/terminal-clipboard/state.json kopiert und danach nur noch von der UI (Stern anklicken) gepflegt.",
+
+  "favorites": [
+    "git status --short --branch",
+    "git log -1 --oneline",
+    "git fetch origin && git switch main",
+    "git diff --check",
+    "docker compose ps",
+    "ss -ltnp",
+    "npm run build",
+    "npm test"
+  ]
+}

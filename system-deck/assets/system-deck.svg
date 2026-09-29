@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- System Deck - drittes Geschwister, gleiches Raster wie Command/Daily Deck.
+     Gleiche Ecken, gleiche Randfarbe, gleicher Neon-Verlauf, gleicher Eckakzent.
+     Motif: Systemkern statt Prompt (◇) - Shield + Statuspunkt. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1B0D2B"/>
+      <stop offset="1" stop-color="#0B0612"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C084FC"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="url(#bg)"
+        stroke="#8B5CF6" stroke-opacity="0.55" stroke-width="1.5"/>
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="url(#neon)"
+        opacity="0.08"/>
+
+  <!-- Kern / Heartbeat: Systemwartung statt Entwickler-Prompt -->
+  <g filter="url(#glow)">
+    <path d="M32 14 L46 20 L46 33 C46 41 39.5 47.5 32 51
+             C24.5 47.5 18 41 18 33 L18 20 Z"
+          fill="none" stroke="#C084FC" stroke-width="2.4"
+          stroke-linejoin="round" opacity="0.92"/>
+    <path d="M24 32.5 L29.5 38 L40.5 27" fill="none" stroke="#A855F7"
+          stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Trennlinie -->
+  <rect x="14" y="55" width="36" height="1.2" rx="0.6" fill="#6D28D9"
+        opacity="0.7"/>
+
+  <!-- Eckakzent -->
+  <circle cx="52" cy="13" r="2.4" fill="#A855F7" filter="url(#glow)"/>
+</svg>

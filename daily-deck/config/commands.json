@@ -1,0 +1,320 @@
+{
+  "_readme": [
+    "DAILY DECK - Befehlsliste. Nur diese Datei bearbeiten, niemals den Code.",
+    "Nach dem Speichern im Deck F5 druecken oder Rechtsklick -> 'Neu laden'.",
+    "",
+    "FELDER EINER ENTRY:",
+    "  name         Anzeigename (mit Icon)",
+    "  description  Kurzbeschreibung / Tooltip-Zeile",
+    "  type         START | TERMINAL | COPY   (Pflicht, bestimmt die Aktion)",
+    "  argv         nur bei START: Argumentliste, z.B. [\"nemo\", \"~\"]",
+    "  command      TERMINAL: Befehl, der im Terminal laeuft",
+    "               COPY:     Text, der kopiert wird",
+    "  workdir      TERMINAL: Arbeitsverzeichnis, z.B. \"~/Downloads\"",
+    "  copy_text    optionaler eigener Text fuer COPY",
+    "  requires     Programme, die installiert sein muessen (Pruefung)",
+    "  enabled      false = Eintrag ausblenden",
+    "",
+    "SICHERHEIT: destruktive Befehle (rm -rf, sudo, mkfs, shutdown, ...)",
+    "werden vom Programm abgewiesen und sind nicht ausfuehrbar.",
+    "Es wird NIE ein Passwort und NIE ein SSH-Key gespeichert.",
+    "SSH-Hosts werden automatisch aus ~/.ssh/config gelesen und hier",
+    "absichtlich NICHT dupliziert."
+  ],
+
+  "settings": {
+    "ssh_workdir": "~",
+    "default_terminal_fallback": ""
+  },
+
+  "categories": {
+    "START": {
+      "icon": "🚀",
+      "order": 10,
+      "entries": [
+        {
+          "name": "🖥 Terminal öffnen",
+          "description": "Standard-Terminal im Home-Verzeichnis",
+          "type": "TERMINAL",
+          "workdir": "~"
+        },
+        {
+          "name": "🖥 Terminal · sauber",
+          "description": "Terminal im Home, Bildschirm geleert",
+          "type": "TERMINAL",
+          "workdir": "~",
+          "command": "clear"
+        },
+        {
+          "name": "📂 Nemo",
+          "description": "Dateimanager im Home-Verzeichnis",
+          "type": "START",
+          "argv": ["nemo", "~"],
+          "requires": ["nemo"]
+        },
+        {
+          "name": "🟣 CS Matrix",
+          "description": "cmatrix - Digital Rain im Terminal",
+          "type": "TERMINAL",
+          "workdir": "~",
+          "command": "cmatrix",
+          "requires": ["cmatrix"]
+        },
+        {
+          "name": "🎵 Musik · Rhythmbox",
+          "description": "Musikplayer starten",
+          "type": "START",
+          "argv": ["rhythmbox"],
+          "requires": ["rhythmbox"]
+        },
+        {
+          "name": "✉ Thunderbird",
+          "description": "E-Mail-Client starten",
+          "type": "START",
+          "argv": ["thunderbird"],
+          "requires": ["thunderbird"]
+        }
+      ]
+    },
+
+    "NAVIGATION": {
+      "icon": "📁",
+      "order": 20,
+      "entries": [
+        {
+          "name": "⬆ Home",
+          "description": "Terminal im Home-Verzeichnis",
+          "type": "TERMINAL",
+          "workdir": "~"
+        },
+        {
+          "name": "📥 Downloads",
+          "description": "Terminal in ~/Downloads",
+          "type": "TERMINAL",
+          "workdir": "~/Downloads"
+        },
+        {
+          "name": "📄 Dokumente",
+          "description": "Terminal in ~/Dokumente",
+          "type": "TERMINAL",
+          "workdir": "~/Dokumente"
+        },
+        {
+          "name": "🎵 Musik-Ordner",
+          "description": "Terminal in ~/Musik",
+          "type": "TERMINAL",
+          "workdir": "~/Musik"
+        },
+        {
+          "name": "🖼 Bilder",
+          "description": "Terminal in ~/Bilder",
+          "type": "TERMINAL",
+          "workdir": "~/Bilder"
+        },
+        {
+          "name": "🎬 Videos",
+          "description": "Terminal in ~/Videos",
+          "type": "TERMINAL",
+          "workdir": "~/Videos"
+        },
+        {
+          "name": "🗂 Schreibtisch",
+          "description": "Terminal in ~/Schreibtisch",
+          "type": "TERMINAL",
+          "workdir": "~/Schreibtisch"
+        },
+        {
+          "name": "📦 Projekte",
+          "description": "Terminal in ~/Projekte",
+          "type": "TERMINAL",
+          "workdir": "~/Projekte"
+        },
+        {
+          "name": "📦 Projekte (Schreibtisch)",
+          "description": "Terminal in ~/Schreibtisch/Projekte",
+          "type": "TERMINAL",
+          "workdir": "~/Schreibtisch/Projekte"
+        },
+        {
+          "name": "🗂 Nemo Downloads",
+          "description": "Dateimanager in ~/Downloads",
+          "type": "START",
+          "argv": ["nemo", "~/Downloads"],
+          "requires": ["nemo"]
+        }
+      ]
+    },
+
+    "SERVER": {
+      "icon": "🌐",
+      "order": 30,
+      "entries": [
+        {
+          "name": "⏏ SSH verlassen",
+          "description": "kopiert 'exit' - im SSH-Fenster einfügen (Strg+Shift+V) + Enter",
+          "type": "COPY",
+          "command": "exit",
+          "copy_text": "exit"
+        },
+        {
+          "name": "🌐 SSH-Verbindung prüfen",
+          "description": "kopiert: ssh -v  (Alias aus ~/.ssh/config anhängen)",
+          "type": "COPY",
+          "command": "ssh -v",
+          "copy_text": "ssh -v"
+        },
+        {
+          "name": "📜 SSH-Aliase anzeigen",
+          "description": "kopiert: grep -E '^Host ' ~/.ssh/config",
+          "type": "COPY",
+          "command": "grep -E '^Host ' ~/.ssh/config",
+          "copy_text": "grep -E '^Host ' ~/.ssh/config"
+        }
+      ]
+    },
+
+    "TERMINAL": {
+      "icon": "⌨",
+      "order": 40,
+      "entries": [
+        {
+          "name": "⬆ cd ..",
+          "description": "eine Ebene höher (in bestehender Shell einfügen)",
+          "type": "COPY",
+          "command": "cd ..",
+          "copy_text": "cd .."
+        },
+        {
+          "name": "⬆ cd ~",
+          "description": "zurück ins Home-Verzeichnis",
+          "type": "COPY",
+          "command": "cd ~",
+          "copy_text": "cd ~"
+        },
+        {
+          "name": "📍 pwd",
+          "description": "aktuelles Verzeichnis anzeigen",
+          "type": "COPY",
+          "command": "pwd",
+          "copy_text": "pwd"
+        },
+        {
+          "name": "📋 ls -la",
+          "description": "Inhalt inkl. versteckter Dateien",
+          "type": "COPY",
+          "command": "ls -la",
+          "copy_text": "ls -la"
+        },
+        {
+          "name": "👁 versteckte Dateien",
+          "description": "Verzeichnisinhalt mit Punkt-Dateien auflisten",
+          "type": "COPY",
+          "command": "ls -la",
+          "copy_text": "ls -lad .*"
+        },
+        {
+          "name": "🧹 clear",
+          "description": "Terminalbild leeren",
+          "type": "COPY",
+          "command": "clear",
+          "copy_text": "clear"
+        },
+        {
+          "name": "🗂 cd <Verzeichnis>",
+          "description": "Verzeichnis wechseln - Platzhalter ersetzen",
+          "type": "COPY",
+          "command": "cd ",
+          "copy_text": "cd "
+        }
+      ]
+    },
+
+    "SYSTEM": {
+      "icon": "⚙",
+      "order": 50,
+      "entries": [
+        {
+          "name": "💻 Systeminfo",
+          "description": "neofetch im Terminal anzeigen",
+          "type": "TERMINAL",
+          "workdir": "~",
+          "command": "neofetch",
+          "requires": ["neofetch"]
+        },
+        {
+          "name": "💽 Speicherplatz",
+          "description": "kopiert: df -h",
+          "type": "COPY",
+          "command": "df -h",
+          "copy_text": "df -h"
+        },
+        {
+          "name": "🧠 Arbeitsspeicher",
+          "description": "kopiert: free -h",
+          "type": "COPY",
+          "command": "free -h",
+          "copy_text": "free -h"
+        },
+        {
+          "name": "⚙ Top-Prozesse",
+          "description": "kopiert: 15 speicherhungrigste Prozesse",
+          "type": "COPY",
+          "command": "ps aux --sort=-%mem | head -n 15",
+          "copy_text": "ps aux --sort=-%mem | head -n 15"
+        },
+        {
+          "name": "⏱ Laufzeit",
+          "description": "kopiert: uptime",
+          "type": "COPY",
+          "command": "uptime",
+          "copy_text": "uptime"
+        },
+        {
+          "name": "📶 Netzwerkstatus",
+          "description": "kopiert: nmcli device status",
+          "type": "COPY",
+          "command": "nmcli device status",
+          "copy_text": "nmcli device status",
+          "requires": ["nmcli"]
+        },
+        {
+          "name": "🌍 IP-Adressen",
+          "description": "kopiert: ip -brief address",
+          "type": "COPY",
+          "command": "ip -brief address",
+          "copy_text": "ip -brief address"
+        }
+      ]
+    },
+
+    "MEDIEN": {
+      "icon": "🎵",
+      "order": 60,
+      "entries": [
+        {
+          "name": "🎵 Musik / ncmpcpp",
+          "description": "ncmpcpp im Terminal starten (ncmpcpp+mpd nicht installiert - siehe README)",
+          "type": "TERMINAL",
+          "workdir": "~/Musik",
+          "command": "ncmpcpp",
+          "requires": ["ncmpcpp"]
+        },
+        {
+          "name": "🎼 MPD starten",
+          "description": "MPD-Dienst starten (mpd nicht installiert - siehe README)",
+          "type": "TERMINAL",
+          "workdir": "~",
+          "command": "systemctl --user start mpd",
+          "requires": ["systemctl", "mpd"]
+        },
+        {
+          "name": "🔊 MPD-Status",
+          "description": "kopiert: systemctl --user status mpd",
+          "type": "COPY",
+          "command": "systemctl --user status mpd",
+          "copy_text": "systemctl --user status mpd"
+        }
+      ]
+    }
+  }
+}

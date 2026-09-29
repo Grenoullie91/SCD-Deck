@@ -1,0 +1,55 @@
+name: Prüflauf
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Selbsttests, Audits, Designabgleich
+    runs-on: ubuntu-latest
+
+    # Der Prüflauf liest nur. GITHUB_TOKEN bekommt deshalb nichts als Lesen.
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python und GTK3 bereitstellen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-gi gir1.2-gtk-3.0 xvfb xterm
+          python3 -c 'import gi; gi.require_version("Gtk","3.0"); from gi.repository import Gtk; print("GTK", Gtk.get_major_version(), Gtk.get_minor_version())'
+
+      # Ohne Terminal melden die Selbsttests "kein Terminal" als Fehler - das
+      # ist auf dem Runner richtig, hier aber nur ein Loch in der Umgebung.
+
+      - name: Shell-Syntax prüfen
+        run: |
+          for f in check.sh */install.sh */restore.sh */uninstall.sh */backup.sh; do
+            [ -f "$f" ] || continue
+            bash -n "$f" && echo "OK  $f"
+          done
+
+      - name: Python-Syntax prüfen
+        run: |
+          python3 -m compileall -q command-deck/app daily-deck/app daily-deck/tools system-deck/app system-deck/tools
+
+      - name: JSON-Konfigurationen prüfen
+        run: |
+          for f in */config/*.json; do
+            python3 -c "import json,sys; json.load(open('$f'))" && echo "OK  $f"
+          done
+
+      - name: Prüflauf ausführen
+        # GTK braucht einen X-Server - im CI unter xvfb, lokal normalerweise
+        # der bereits laufende Display.
+        run: xvfb-run -a --server-args="-screen 0 1280x1024x24" ./check.sh
+
+      - name: Theme-Identität prüfen
+        run: |
+          python3 system-deck/tools/theme-check.py | tee theme-report.txt
+          grep -q "BESTÄTIGT\|BEST" theme-report.txt

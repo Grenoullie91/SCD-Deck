@@ -1,0 +1,147 @@
+{
+  "_comment": "Terminal Command Deck - Befehlsliste. Platzhalter in <> werden mit kopiert, nicht ausgefuehrt. Ueber 'Befehle bearbeiten' im Widget oder manuell editierbar. Reload: F5 oder Rechtsklick -> Neu laden.",
+  "categories": {
+    "Git": {
+      "icon": "◈",
+      "commands": [
+        "git status --short --branch",
+        "git status",
+        "git log --oneline -<N>",
+        "git log -1 --oneline",
+        "git diff",
+        "git diff --check",
+        "git diff --name-status <OLD_SHA>..<NEW_SHA>",
+        "git diff --cached",
+        "git add -A",
+        "git add .",
+        "git commit -m \"<MESSAGE>\"",
+        "git switch -c <BRANCH>",
+        "git switch main",
+        "git switch --detach <SHA>",
+        "git fetch origin",
+        "git fetch origin main",
+        "git fetch origin <BRANCH>",
+        "git push origin <BRANCH>",
+        "git reset --hard",
+        "git rev-parse HEAD",
+        "git rev-parse --short HEAD",
+        "git branch --show-current",
+        "git show-ref --verify refs/heads/<BRANCH>"
+      ]
+    },
+    "Docker": {
+      "icon": "◈",
+      "commands": [
+        "docker compose ps",
+        "docker compose ps -a",
+        "docker compose up -d",
+        "docker compose down",
+        "docker compose config --format json",
+        "docker compose version",
+        "docker ps",
+        "docker images",
+        "docker images --filter reference='<IMAGE>:*'",
+        "docker inspect <CONTAINER>",
+        "docker image inspect <IMAGE>",
+        "docker logs -f <CONTAINER>",
+        "docker stats --no-stream"
+      ]
+    },
+    "Deploy / Remote": {
+      "icon": "◈",
+      "commands": [
+        "ssh <USER>@<HOST>",
+        "ssh -N -L <LOCAL_PORT>:<REMOTE_HOST>:<REMOTE_PORT> <USER>@<HOST>",
+        "rsync -av --checksum <LOCAL_FILE> <USER>@<HOST>:<REMOTE_PATH>",
+        "rsync -avz --delete --exclude '<PATTERN>' <SRC>/ <USER>@<HOST>:<DEST>/",
+        "scp <FILE> <USER>@<HOST>:<REMOTE_PATH>",
+        "rsync -av --checksum <FILE> <USER>@<HOST>:<REMOTE_PATH>"
+      ]
+    },
+    "Netz / Health": {
+      "icon": "◈",
+      "commands": [
+        "ss -ltnp",
+        "curl --fail --silent http://<HOST>:<PORT>/api/ready",
+        "curl --fail --silent http://<HOST>:<PORT>/api/health",
+        "curl -I https://<HOST>",
+        "ping -c 4 <HOST>",
+        "dig +short <HOST>",
+        "traceroute <HOST>"
+      ]
+    },
+    "Shell / CI": {
+      "icon": "◈",
+      "commands": [
+        "set -Eeuo pipefail",
+        "set -x",
+        "test -z \"$(git status --porcelain --untracked-files=all)\"",
+        "mkdir -p \"<DIR>\"",
+        "export PATH=\"$HOME/.local/bin:$PATH\"",
+        "sha256sum <FILE>",
+        "date -Is",
+        "printf '%s\\n' \"<VALUE>\""
+      ]
+    },
+    "Dateien": {
+      "icon": "◈",
+      "commands": [
+        "ls -lah",
+        "pwd",
+        "cd <PROJECT_PATH>",
+        "mkdir <FOLDER>",
+        "mkdir -p <FOLDER>",
+        "cp -a <SRC> <DEST>",
+        "mv <SRC> <DEST>",
+        "rm -i <FILE>",
+        "chmod +x <SCRIPT>",
+        "find . -name '<PATTERN>' -type f",
+        "grep -rn '<PATTERN>' .",
+        "tail -f <LOGFILE>",
+        "less <FILE>",
+        "du -sh *",
+        "tree -L 2"
+      ]
+    },
+    "System": {
+      "icon": "◈",
+      "commands": [
+        "sudo apt update",
+        "sudo apt upgrade",
+        "sudo apt install <PACKAGE>",
+        "systemctl status <SERVICE>",
+        "systemctl restart <SERVICE>",
+        "systemctl is-active <SERVICE>",
+        "ps aux --sort=-%mem | head",
+        "df -h",
+        "free -h",
+        "journalctl -u <SERVICE> -f --no-pager"
+      ]
+    },
+    "Node / npm": {
+      "icon": "◈",
+      "commands": [
+        "npm install",
+        "npm ci",
+        "npm run dev",
+        "npm run build",
+        "npm run start",
+        "npm test",
+        "npm run lint",
+        "npm run <SCRIPT>",
+        "npm outdated",
+        "node -p \"require('./package.json').scripts\"",
+        "npx <TOOL> --help"
+      ]
+    }
+  },
+  "defaults": {
+    "always_on_top": true,
+    "opacity": 0.95,
+    "width": 400,
+    "height": 460,
+    "x": 40,
+    "y": 60,
+    "font": "Hack 9"
+  }
+}

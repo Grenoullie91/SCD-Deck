@@ -1,0 +1,600 @@
+/* ============================================================
+   SYSTEM DECK  ::  Dark Purple / Neon Violet / Glass
+   ------------------------------------------------------------
+   Diese Datei ist eine Kopie des Command-Deck- und Daily-Deck-
+   Themes. Dadurch sehen alle drei Decks pixelgleich aus.
+   Der Abschnitt "DAILY DECK :: Aktionsknöpfe" wird hier nicht
+   gebraucht; das System Deck bringt stattdessen die Abschnitte
+   am Dateiende mit:
+        SYSTEM DECK :: Aktionsknöpfe  (READ / COPY / TERM / ADMIN)
+        SYSTEM DECK :: Quick System Check
+        SYSTEM DECK :: Kategorie-Raster
+        SYSTEM DECK :: Ausgabe-Fenster
+        SYSTEM DECK :: Dialoge
+   Die Originaldateien der beiden anderen Decks bleiben davon
+   unberuehrt - es wird nur gelesen, nie geschrieben.
+   ============================================================ */
+
+@define-color bg0        #0B0612;
+@define-color bg1        #12091F;
+@define-color bg2        #1B0D2B;
+@define-color bg3        #241238;
+@define-color violet_d   #6D28D9;
+@define-color violet     #8B5CF6;
+@define-color neon       #A855F7;
+@define-color neon_lt    #C084FC;
+@define-color txt        #EDE9F5;
+@define-color txt_dim    #9C8FB5;
+@define-color txt_faint  #5E5375;
+@define-color border     #2E1B4A;
+@define-color danger     #F472B6;
+
+/* ---------- Base ---------- */
+.deck {
+  background-color: alpha(@bg0, 0.94);
+  background-image:
+    linear-gradient(180deg, alpha(@violet_d, 0.16) 0%, alpha(@bg0, 0) 42%),
+    linear-gradient(135deg, alpha(@neon, 0.07) 0%, alpha(@bg0, 0) 38%);
+  border: 1px solid alpha(@violet, 0.45);
+  border-radius: 14px;
+}
+
+.deck:focus {
+  border-color: alpha(@neon, 0.75);
+}
+
+/* subtle scanline texture */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    180deg,
+    alpha(@violet, 0.030) 0px,
+    alpha(@violet, 0.030) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* ---------- Header ---------- */
+.header {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.42) 0%, alpha(@bg1, 0.10) 100%);
+  border-bottom: 1px solid alpha(@violet, 0.40);
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  padding: 8px 10px 7px 10px;
+}
+
+.header:hover {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.58) 0%, alpha(@bg1, 0.10) 100%);
+}
+
+.title {
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.glyph {
+  color: @neon_lt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 12px;
+  text-shadow: 0 0 7px alpha(@neon, 0.85);
+}
+
+.subtitle {
+  color: @txt_faint;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 1.6px;
+}
+
+.hint {
+  color: @txt_faint;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Search ---------- */
+.search {
+  background-color: alpha(@bg0, 0.75);
+  border: 1px solid alpha(@violet, 0.35);
+  border-radius: 8px;
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9.5px;
+  padding: 3px 7px;
+  caret-color: @neon_lt;
+}
+.search:focus {
+  background-color: alpha(@bg1, 0.9);
+  border-color: @neon;
+  box-shadow: 0 0 9px alpha(@neon, 0.32);
+}
+
+/* Hinweistext, der als eigenes Label ueber dem Entry liegt.
+   GTK 3.24 kennt den CSS-Pseudo-Selektor ::placeholder nicht. */
+.search-hint {
+  color: @txt_faint;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9.5px;
+  background-color: transparent;
+}
+
+.clear {
+  background-color: alpha(@bg0, 0.55);
+  border: 1px solid alpha(@violet, 0.30);
+  border-radius: 5px;
+  color: @txt_dim;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 8.5px;
+  padding: 0px 5px;
+  min-width: 18px;
+  min-height: 16px;
+}
+.clear:hover {
+  background-color: alpha(@violet_d, 0.55);
+  border-color: @neon;
+  color: @neon_lt;
+}
+.clear:active { background-color: alpha(@violet_d, 0.8); color: #FFFFFF; }
+
+/* ---------- Scroller ---------- */
+scrollbar {
+  background-color: transparent;
+  min-width: 7px;
+  min-height: 7px;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+scrollbar slider {
+  background-color: alpha(@violet, 0.42);
+  border-radius: 4px;
+  min-width: 7px;
+  min-height: 24px;
+  border: 0;
+}
+scrollbar slider:hover { background-color: @neon; }
+scrollbar.horizontal slider { min-height: 7px; min-width: 24px; }
+
+/* ---------- Category header ---------- */
+.cat {
+  background-image: linear-gradient(90deg, alpha(@violet_d, 0.40) 0%, alpha(@violet_d, 0.02) 70%, transparent 100%);
+  border-left: 2px solid @neon;
+  border-radius: 2px 5px 5px 2px;
+  padding: 2px 7px;
+  margin: 9px 0 3px 0;
+}
+.cat-label {
+  color: @neon_lt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 8.5px;
+  font-weight: bold;
+  letter-spacing: 2.2px;
+}
+.cat-count {
+  color: @txt_faint;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.5px;
+}
+.cat-fav .cat-label { color: #F0ABFC; }
+.cat-fav { border-left-color: #F0ABFC; }
+
+/* ---------- Command row ---------- */
+.row {
+  border-radius: 6px;
+  padding: 0px 3px;
+  margin: 0px 0;
+}
+.row:hover {
+  background-color: alpha(@violet_d, 0.38);
+  border: 1px solid alpha(@neon, 0.32);
+}
+
+.cmd {
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9.5px;
+}
+
+.fav-star {
+  color: #F0ABFC;
+  font-size: 9px;
+  text-shadow: 0 0 6px alpha(#F0ABFC, 0.7);
+}
+.fav-star-off { color: @txt_faint; font-size: 9px; }
+.fav-star:hover { color: #F5D0FE; }
+
+/* ---------- Copy button ---------- */
+.copy {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.85) 0%, alpha(@violet, 0.42) 100%);
+  border: 1px solid alpha(@neon, 0.65);
+  border-radius: 5px;
+  color: #F5F3FF;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  padding: 1px 6px;
+  min-width: 44px;
+  min-height: 16px;
+}
+.copy:hover {
+  background-image: linear-gradient(180deg, @neon 0%, @violet 100%);
+  border-color: @neon_lt;
+  box-shadow: 0 0 10px alpha(@neon, 0.80);
+  color: #FFFFFF;
+}
+.copy:active {
+  background-image: linear-gradient(180deg, @violet 0%, @violet_d 100%);
+  box-shadow: none;
+}
+
+/* confirmation state */
+.copy.ok {
+  background-image: linear-gradient(180deg, #15803D 0%, #166534 100%);
+  border-color: #4ADE80;
+  color: #DCFCE7;
+  box-shadow: 0 0 11px alpha(#4ADE80, 0.62);
+}
+
+/* ---------- Footer / status ---------- */
+.footer {
+  background-image: linear-gradient(180deg, alpha(@bg1, 0.0) 0%, alpha(@violet_d, 0.30) 100%);
+  border-top: 1px solid alpha(@violet, 0.32);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 3px 9px;
+}
+.status {
+  color: @txt_dim;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.4px;
+}
+.status-neon {
+  color: @neon_lt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.4px;
+}
+.status-warn { color: #FBBF24; font-family: "Hack", "DejaVu Sans Mono", monospace; font-size: 7.5px; }
+
+/* ---------- Resize grip ---------- */
+.grip {
+  background-color: alpha(@neon_lt, 0.55);
+  border-radius: 2px;
+  min-width: 12px;
+  min-height: 12px;
+}
+.grip:hover { background-color: @neon_lt; }
+
+/* ---------- Menu ---------- */
+menu, .menu {
+  background-color: alpha(@bg1, 0.97);
+  border: 1px solid alpha(@violet, 0.55);
+  border-radius: 8px;
+  padding: 4px;
+}
+menuitem {
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9.5px;
+  padding: 4px 12px 4px 6px;
+  border-radius: 4px;
+}
+menuitem:hover {
+  background-color: alpha(@violet_d, 0.75);
+  color: #FFFFFF;
+}
+menuseparator {
+  background-color: alpha(@violet, 0.32);
+  margin: 3px 6px;
+}
+
+/* ---------- Tooltip ---------- */
+tooltip {
+  background-color: alpha(@bg0, 0.97);
+  border: 1px solid alpha(@neon, 0.55);
+  border-radius: 6px;
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 8.5px;
+  padding: 3px 7px;
+}
+
+/* ============================================================
+   AKTIONSKNÖPFEN  (gemeinsame Formensprache aller drei Decks)
+   Startet beim Original-Knopf "COPY" des Command Decks - gleiche
+   Optik. Das System Deck hat vier Ausprägungen; der Typ steht
+   immer als Text auf dem Knopf, damit nichts "heimlich" passiert.
+   ============================================================ */
+
+.act {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.85) 0%, alpha(@violet, 0.42) 100%);
+  border: 1px solid alpha(@neon, 0.65);
+  border-radius: 5px;
+  color: #F5F3FF;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  padding: 1px 6px;
+  min-width: 52px;
+  min-height: 16px;
+}
+.act:hover {
+  background-image: linear-gradient(180deg, @neon 0%, @violet 100%);
+  border-color: @neon_lt;
+  box-shadow: 0 0 10px alpha(@neon, 0.80);
+  color: #FFFFFF;
+}
+.act:active {
+  background-image: linear-gradient(180deg, @violet 0%, @violet_d 100%);
+  box-shadow: none;
+}
+
+.act-copy { min-width: 44px; }
+.act-copy:hover {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.95) 0%, alpha(@violet, 0.55) 100%);
+}
+
+/* READ = nur lesen, TERMINAL = sichtbares Terminal,
+   START = Programm, COPY = nur Zwischenablage */
+.act-start  { border-color: alpha(#4ADE80, 0.60); color: #E6FFF2; }
+.act-terminal { border-color: alpha(@neon, 0.72); }
+.act-read  { border-color: alpha(@neon_lt, 0.68); color: #EDE9FE; }
+.act-read:hover {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.95) 0%, alpha(@violet, 0.55) 100%);
+}
+
+/* ADMIN = braucht Root, immer mit Warnrahmen */
+.act-admin {
+  border-color: alpha(#FBBF24, 0.72);
+  color: #FEF3C7;
+}
+
+/* nicht verfuegbar (Programm fehlt) */
+.act-missing {
+  background-color: alpha(@bg0, 0.50);
+  border-color: alpha(@txt_faint, 0.60);
+  color: @txt_faint;
+}
+.act-missing:hover {
+  background-color: alpha(@bg0, 0.50);
+  border-color: alpha(@txt_faint, 0.60);
+  box-shadow: none;
+  color: @txt_faint;
+}
+
+/* gesperrt (destruktiver Befehl) */
+.act-blocked {
+  background-color: alpha(#45000A, 0.70);
+  border-color: @danger;
+  color: #FBCFE8;
+}
+.act-blocked:hover {
+  background-color: alpha(#45000A, 0.70);
+  border-color: @danger;
+  box-shadow: none;
+  color: #FBCFE8;
+}
+
+/* gruene Bestaetigung nach dem Klick (wie beim Command Deck) */
+.act.ok {
+  background-image: linear-gradient(180deg, #15803D 0%, #166534 100%);
+  border-color: #4ADE80;
+  color: #DCFCE7;
+  box-shadow: 0 0 11px alpha(#4ADE80, 0.62);
+}
+
+/* ============================================================
+   SYSTEM DECK :: Quick System Check
+   ============================================================ */
+
+.check {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.30) 0%, alpha(@bg1, 0.05) 100%);
+  border: 1px solid alpha(@violet, 0.30);
+  border-radius: 7px;
+  padding: 1px 2px;
+}
+.check:hover { border-color: alpha(@neon, 0.45); }
+
+.check-title {
+  color: @neon_lt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 8.5px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.check-item {
+  background-color: alpha(@bg0, 0.45);
+  border: 1px solid alpha(@violet, 0.22);
+  border-radius: 5px;
+  padding: 1px 4px;
+}
+.check-name {
+  color: @txt_dim;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.6px;
+}
+.check-val {
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* Funktionale Statusfarben - bewusst ausserhalb der Purple-Familie,
+   damit OK / Warnung / Problem sofort unterscheidbar bleiben. */
+.st-ok    { color: #4ADE80; text-shadow: 0 0 6px alpha(#4ADE80, 0.45); }
+.st-warn  { color: #FBBF24; text-shadow: 0 0 6px alpha(#FBBF24, 0.45); }
+.st-err   { color: #F87171; text-shadow: 0 0 6px alpha(#F87171, 0.50); }
+.st-info  { color: @neon_lt; text-shadow: 0 0 6px alpha(@neon, 0.40); }
+.st-idle  { color: @txt_faint; }
+
+/* ============================================================
+   SYSTEM DECK :: Kategorie-Raster (Ansichtsauswahl)
+   ============================================================ */
+
+.catbtn {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.55) 0%, alpha(@violet_d, 0.18) 100%);
+  border: 1px solid alpha(@violet, 0.35);
+  border-radius: 5px;
+  color: @txt_dim;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  font-weight: bold;
+  letter-spacing: 0.6px;
+  padding: 2px 1px;
+}
+.catbtn:hover {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.85) 0%, alpha(@violet, 0.35) 100%);
+  border-color: alpha(@neon, 0.70);
+  color: #FFFFFF;
+  box-shadow: 0 0 8px alpha(@neon, 0.40);
+}
+.catbtn:active { box-shadow: none; }
+
+.catbtn.on {
+  background-image: linear-gradient(180deg, @neon 0%, @violet_d 100%);
+  border-color: @neon_lt;
+  color: #FFFFFF;
+  box-shadow: 0 0 10px alpha(@neon, 0.55);
+}
+
+/* ============================================================
+   SYSTEM DECK :: Ausgabe-Fenster (READ-Ergebnis / Logs)
+   ============================================================ */
+
+.output {
+  background-color: alpha(@bg0, 0.82);
+  border: 1px solid alpha(@violet, 0.38);
+  border-radius: 7px;
+}
+.output text {
+  background-color: transparent;
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 8.5px;
+}
+
+.out-bar {
+  background-image: linear-gradient(180deg, alpha(@bg1, 0.0) 0%, alpha(@violet_d, 0.28) 100%);
+  border-top: 1px solid alpha(@violet, 0.30);
+  border-bottom: 1px solid alpha(@violet, 0.22);
+  padding: 2px 5px;
+}
+.out-title {
+  color: @neon_lt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  letter-spacing: 1.2px;
+}
+
+/* kleines Werkzeug im Ausgabe-Fenster: alles kopieren / schliessen */
+.mini {
+  background-color: alpha(@bg0, 0.55);
+  border: 1px solid alpha(@violet, 0.30);
+  border-radius: 5px;
+  color: @txt_dim;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  padding: 0px 5px;
+  min-width: 18px;
+  min-height: 15px;
+}
+.mini:hover {
+  background-color: alpha(@violet_d, 0.55);
+  border-color: @neon;
+  color: @neon_lt;
+}
+.mini:active { background-color: alpha(@violet_d, 0.8); color: #FFFFFF; }
+
+/* ============================================================
+   SYSTEM DECK :: Dialoge (Admin-Bestätigung, Fehlermeldung)
+   ============================================================ */
+
+.sd-dialog {
+  background-color: alpha(@bg0, 0.97);
+  background-image:
+    linear-gradient(180deg, alpha(@violet_d, 0.18) 0%, alpha(@bg0, 0) 45%);
+  border: 1px solid alpha(@neon, 0.55);
+  border-radius: 12px;
+}
+.sd-dialog .titlebar {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.45) 0%, alpha(@bg1, 0.10) 100%);
+  border-bottom: 1px solid alpha(@violet, 0.40);
+  border-top-left-radius: 11px;
+  border-top-right-radius: 11px;
+  padding: 6px 10px;
+}
+.sd-title {
+  color: @txt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.6px;
+}
+.sd-body {
+  color: @txt_dim;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9px;
+  padding: 4px 2px;
+}
+.sd-cmd {
+  background-color: alpha(@bg1, 0.9);
+  border: 1px solid alpha(@violet, 0.40);
+  border-radius: 6px;
+  color: @neon_lt;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9px;
+  padding: 4px 6px;
+}
+.sd-warn {
+  color: #FBBF24;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+}
+
+.sd-ok {
+  background-image: linear-gradient(180deg, alpha(@violet_d, 0.85) 0%, alpha(@violet, 0.42) 100%);
+  border: 1px solid alpha(@neon, 0.65);
+  border-radius: 5px;
+  color: #F5F3FF;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7.5px;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  padding: 2px 10px;
+  min-height: 20px;
+}
+.sd-ok:hover {
+  background-image: linear-gradient(180deg, @neon 0%, @violet 100%);
+  border-color: @neon_lt;
+  box-shadow: 0 0 10px alpha(@neon, 0.70);
+  color: #FFFFFF;
+}
+.sd-ok:active { box-shadow: none; }
+
+/* ============================================================
+   SYSTEM DECK :: Sperr- und Hinweiszeilen in der Liste
+   ============================================================ */
+
+.row-blocked .cmd { color: #FBCFE8; }
+.row-missing .cmd { color: @txt_faint; }
+.row-danger { border-left: 2px solid alpha(#FBBF24, 0.55); }
+
+.legend {
+  color: @txt_faint;
+  font-family: "Hack", "DejaVu Sans Mono", monospace;
+  font-size: 7px;
+  letter-spacing: 0.3px;
+}

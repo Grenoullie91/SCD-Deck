@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.venv/
+venv/
+
+# Laufzeit-Zustand der Decks (gehoert nie ins Repo)
+state.json
+instance.lock
+*.log
+
+# Autostart / Menüeinträge, die der Installer erzeugt
+*.desktop
+
+# Prüf- und Screenshot-Ausgaben
+/screenshot*.png
+*.png.tmp
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Backups, die ein Deck selbst erzeugt
+backups/

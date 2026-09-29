@@ -1,0 +1,1844 @@
+{
+  "_readme": [
+    "SYSTEM DECK - Befehlsliste. Nur diese Datei bearbeiten, niemals den Code.",
+    "Nach dem Speichern im Deck F5 druecken oder Rechtsklick -> 'Neu laden'.",
+    "",
+    "FELDER EINER ENTRY:",
+    "  name         Anzeigename (mit Icon)",
+    "  description  Kurzbeschreibung / Tooltip-Zeile",
+    "  type         READ | COPY | TERM | ADMIN   (Pflicht, bestimmt die Aktion)",
+    "               READ   fuehrt einen Lesebefehl aus und zeigt das Ergebnis",
+    "                      im Ausgabefenster - ohne Shell, mit Zeitlimit.",
+    "                      Benoetigt 'argv' (Argumentliste).",
+    "               COPY   kopiert nur den Text 'cmd' - fuehrt nichts aus.",
+    "               TERM   oeffnet ein sichtbares Terminal mit 'cmd'.",
+    "               ADMIN  oeffnet ein sichtbares Terminal mit 'admin_command'",
+    "                      bzw. 'cmd' - aber erst nach Bestaetigungsdialog.",
+    "  cmd          der Befehl als Text (Anzeige, Kopie, Terminal)",
+    "  argv         nur bei READ: Argumentliste, z.B. [\"df\", \"-hT\", \"-x\", \"tmpfs\"]",
+    "               Wird OHNE Shell ausgefuehrt - Pipes sind hier nicht erlaubt.",
+    "  admin_command nur bei ADMIN: der sudo-Befehl fuer das Terminal",
+    "  unit         nur bei ADMIN: Dienstname, dient als Schutz vor kritischen",
+    "               Systemdiensten (ssh, NetworkManager, display-manager, ...)",
+    "  sudo         true erlaubt 'sudo' fuer reine Lesebefehle, aber NUR bei",
+    "               TYPE=TERM. Der Befehl landet dann im sichtbaren Terminal",
+    "               und wird dort bestaetigt - das Deck fuehrt ihn nie aus.",
+    "  check        verknuepft den Befehl mit einem Feld des Quick System Check",
+    "  requires     Programme, die installiert sein muessen (automatische Pruefung)",
+    "  enabled      false = Eintrag ausblenden",
+    "",
+    "SICHERHEIT: destruktive Befehle (rm -rf, mkfs, dd, shutdown, userdel,",
+    "apt install/remove, ufw allow/deny, Firewall-Zuruecksetzen, ...)",
+    "werden vom Programm abgewiesen und sind nicht ausfuehrbar.",
+    "Es wird NIE ein Passwort gespeichert, NIE ein SSH-Key gelesen.",
+    "Es werden NIE Updates, Pakete oder Dienste ohne deinen Klick angefasst.",
+    "",
+    "WICHTIG: Das Deck veraendert weder Command Deck noch Daily Deck,",
+    "  allow_rc     Statuscodes, die fuer diesen Eintrag KEIN Fehler sind",
+    "               (z.B. [0,1] bei du/find, wenn geschuetzte Ordner nicht lesbar sind)",
+    "weder Wallpaper noch Cairo-Dock noch das Panel."
+  ],
+  "settings": {
+    "timeout_s": 10
+  },
+  "categories": {
+    "SYSTEM": {
+      "icon": "🖥",
+      "order": 10,
+      "entries": [
+        {
+          "name": "🖥 Systemübersicht",
+          "description": "Kernel, Architektur, Hostname, Benutzer, Distribution",
+          "type": "READ",
+          "cmd": "uname -a",
+          "argv": [
+            "uname",
+            "-a"
+          ],
+          "requires": [
+            "uname"
+          ],
+          "check": "SYSTEM"
+        },
+        {
+          "name": "🎩 Linux Mint Version",
+          "description": "Distribution, Codename, Version",
+          "type": "READ",
+          "cmd": "lsb_release -a",
+          "argv": [
+            "lsb_release",
+            "-a"
+          ],
+          "requires": [
+            "lsb_release"
+          ]
+        },
+        {
+          "name": "🐧 Kernel & Aufbau",
+          "description": "Kernelversion, Systemtyp, Hardwareplattform",
+          "type": "READ",
+          "cmd": "uname -srvmo",
+          "argv": [
+            "uname",
+            "-srvmo"
+          ],
+          "requires": [
+            "uname"
+          ]
+        },
+        {
+          "name": "🖥 Desktop-Umgebung",
+          "description": "Aktive Desktop-Umgebung und Sitzungstyp",
+          "type": "READ",
+          "cmd": "printenv XDG_CURRENT_DESKTOP",
+          "argv": [
+            "printenv",
+            "XDG_CURRENT_DESKTOP"
+          ],
+          "requires": [
+            "printenv"
+          ],
+          "check": "SYSTEM"
+        },
+        {
+          "name": "🪟 Sitzungstyp",
+          "description": "Wayland oder X11",
+          "type": "READ",
+          "cmd": "printenv XDG_SESSION_TYPE",
+          "argv": [
+            "printenv",
+            "XDG_SESSION_TYPE"
+          ],
+          "requires": [
+            "printenv"
+          ]
+        },
+        {
+          "name": "⏱ Laufzeit (Uptime)",
+          "description": "Laufzeit, Benutzerzahl, Last",
+          "type": "READ",
+          "cmd": "uptime",
+          "argv": [
+            "uptime"
+          ],
+          "requires": [
+            "uptime"
+          ]
+        },
+        {
+          "name": "🏷 Hostname",
+          "description": "Hostname, Betriebssystem, Kernel",
+          "type": "READ",
+          "cmd": "hostnamectl",
+          "argv": [
+            "hostnamectl"
+          ],
+          "requires": [
+            "hostnamectl"
+          ]
+        },
+        {
+          "name": "👤 Angemeldete Benutzer",
+          "description": "Wer ist gerade angemeldet",
+          "type": "READ",
+          "cmd": "who -a",
+          "argv": [
+            "who",
+            "-a"
+          ],
+          "requires": [
+            "who"
+          ]
+        },
+        {
+          "name": "🧱 Architektur",
+          "description": "Prozessorarchitektur und Byte-Reihenfolge",
+          "type": "READ",
+          "cmd": "arch",
+          "argv": [
+            "arch"
+          ],
+          "requires": [
+            "arch"
+          ]
+        },
+        {
+          "name": "🗓 Letzte Starts",
+          "description": "Bootprotokoll und Shutdowns der letzten Systemstarts",
+          "type": "READ",
+          "cmd": "last -x",
+          "argv": [
+            "last",
+            "-x"
+          ],
+          "requires": [
+            "last"
+          ],
+          "filter_re": "reboot|shutdown"
+        }
+      ]
+    },
+    "HARDWARE": {
+      "icon": "🔧",
+      "order": 20,
+      "entries": [
+        {
+          "name": "🧠 CPU",
+          "description": "Modell, Kerne, Threads, Flags, Frequenzen",
+          "type": "READ",
+          "cmd": "lscpu",
+          "argv": [
+            "lscpu"
+          ],
+          "requires": [
+            "lscpu"
+          ],
+          "check": "CPU"
+        },
+        {
+          "name": "🧠 CPU-Kerne (Kurz)",
+          "description": "Prozessorkerne, MIPS, Frequenzbereiche",
+          "type": "READ",
+          "cmd": "lscpu -e",
+          "argv": [
+            "lscpu",
+            "-e"
+          ],
+          "requires": [
+            "lscpu"
+          ]
+        },
+        {
+          "name": "🧠 Prozess-Laufzeit",
+          "description": "Load Average, Idle-Zeit pro Prozessor",
+          "type": "READ",
+          "cmd": "vmstat 1 3",
+          "argv": [
+            "vmstat",
+            "1",
+            "3"
+          ],
+          "requires": [
+            "vmstat"
+          ],
+          "check": "CPU"
+        },
+        {
+          "name": "🧩 Mainboard",
+          "description": "Hersteller, Modell und Revision des Mainboards (DMI)",
+          "type": "READ",
+          "cmd": "cat /sys/devices/virtual/dmi/id/board_vendor /sys/devices/virtual/dmi/id/board_name",
+          "argv": [
+            "cat",
+            "/sys/devices/virtual/dmi/id/board_vendor",
+            "/sys/devices/virtual/dmi/id/board_name",
+            "/sys/devices/virtual/dmi/id/board_version"
+          ],
+          "requires": [
+            "cat"
+          ]
+        },
+        {
+          "name": "💻 BIOS / System",
+          "description": "BIOS-Hersteller und Datum",
+          "type": "READ",
+          "cmd": "cat /sys/devices/virtual/dmi/id/bios_vendor /sys/devices/virtual/dmi/id/bios_date",
+          "argv": [
+            "cat",
+            "/sys/devices/virtual/dmi/id/bios_vendor",
+            "/sys/devices/virtual/dmi/id/bios_date",
+            "/sys/devices/virtual/dmi/id/bios_version"
+          ],
+          "requires": [
+            "cat"
+          ]
+        },
+        {
+          "name": "🔌 USB-Geräte",
+          "description": "Angeschlossene USB-Geräte",
+          "type": "READ",
+          "cmd": "lsusb",
+          "argv": [
+            "lsusb"
+          ],
+          "requires": [
+            "lsusb"
+          ]
+        },
+        {
+          "name": "🔌 USB-Busse",
+          "description": "Verwendete USB-Treiber und Übertragungsraten",
+          "type": "READ",
+          "cmd": "lsusb -t",
+          "argv": [
+            "lsusb",
+            "-t"
+          ],
+          "requires": [
+            "lsusb"
+          ]
+        },
+        {
+          "name": "🗃 PCI-Geräte",
+          "description": "Alle PCI-Geräte mit Klartext",
+          "type": "READ",
+          "cmd": "lspci -nn",
+          "argv": [
+            "lspci",
+            "-nn"
+          ],
+          "requires": [
+            "lspci"
+          ]
+        },
+        {
+          "name": "🔌 DMI (Terminal)",
+          "description": "Vollständige Hardwaredaten - benötigt Root",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo lshw -short",
+          "requires": [
+            "lshw"
+          ],
+          "package": "lshw"
+        },
+        {
+          "name": "🧬 DMI-Detail (Terminal)",
+          "description": "BIOS/Board-Details mit dmidecode - benötigt Root",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo dmidecode -t system -t bios -t baseboard",
+          "requires": [
+            "dmidecode"
+          ],
+          "package": "dmidecode"
+        }
+      ]
+    },
+    "STORAGE": {
+      "icon": "💾",
+      "order": 30,
+      "entries": [
+        {
+          "name": "💾 Dateisysteme",
+          "description": "Belegung aller eingebundenen Dateisysteme",
+          "type": "READ",
+          "cmd": "df -hT -x tmpfs -x devtmpfs",
+          "argv": [
+            "df",
+            "-hT",
+            "-x",
+            "tmpfs",
+            "-x",
+            "devtmpfs"
+          ],
+          "requires": [
+            "df"
+          ],
+          "check": "STORAGE"
+        },
+        {
+          "name": "💽 Inodes",
+          "description": "Belegung der Datei-Slots (oft der wahre Engpass)",
+          "type": "READ",
+          "cmd": "df -ih -x tmpfs -x devtmpfs",
+          "argv": [
+            "df",
+            "-ih",
+            "-x",
+            "tmpfs",
+            "-x",
+            "devtmpfs"
+          ],
+          "requires": [
+            "df"
+          ]
+        },
+        {
+          "name": "🧲 Blockgeräte",
+          "description": "SSDs, NVMe, Festplatten, Partitions, Modelle",
+          "type": "READ",
+          "cmd": "lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT,MODEL,ROTA",
+          "argv": [
+            "lsblk",
+            "-o",
+            "NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT,MODEL,ROTA"
+          ],
+          "requires": [
+            "lsblk"
+          ]
+        },
+        {
+          "name": "🔗 Dateisystem-UUIDs",
+          "description": "UUID, Typ und Zustand jeder Partition",
+          "type": "READ",
+          "cmd": "lsblk -f",
+          "argv": [
+            "lsblk",
+            "-f"
+          ],
+          "requires": [
+            "lsblk"
+          ]
+        },
+        {
+          "name": "📂 Einhängepunkte",
+          "description": "Kompletter Mount-Tree des Systems",
+          "type": "READ",
+          "cmd": "findmnt -R /",
+          "argv": [
+            "findmnt",
+            "-R",
+            "/"
+          ],
+          "requires": [
+            "findmnt"
+          ]
+        },
+        {
+          "name": "⚡ SMART-Werte",
+          "description": "SSD-/HDD-Zustand, benötigt Root und smartmontools",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo smartctl --scan-open",
+          "requires": [
+            "smartctl"
+          ],
+          "package": "smartmontools"
+        },
+        {
+          "name": "🔄 Blockgeräte anzeigen (Terminal)",
+          "description": "lsblk -f im Terminal, frei bedienbar",
+          "type": "TERM",
+          "cmd": "lsblk -f",
+          "requires": [
+            "lsblk"
+          ]
+        }
+      ]
+    },
+    "PERFORMANCE": {
+      "icon": "📈",
+      "order": 40,
+      "entries": [
+        {
+          "name": "📈 CPU-Auslastung",
+          "description": "Load Average und Auslastung je Prozessor",
+          "type": "READ",
+          "cmd": "top -b -n1 -w 200",
+          "argv": [
+            "top",
+            "-b",
+            "-n1",
+            "-w",
+            "200"
+          ],
+          "requires": [
+            "top"
+          ],
+          "check": "CPU"
+        },
+        {
+          "name": "📈 RAM & Swap",
+          "description": "Speicher- und Swap-Belegung inkl. Cache",
+          "type": "READ",
+          "cmd": "free -h -w",
+          "argv": [
+            "free",
+            "-h",
+            "-w"
+          ],
+          "requires": [
+            "free"
+          ],
+          "check": "RAM"
+        },
+        {
+          "name": "📉 Systemlast",
+          "description": "Load Average und Prozess-/Thread-Zahl",
+          "type": "READ",
+          "cmd": "cat /proc/loadavg",
+          "argv": [
+            "cat",
+            "/proc/loadavg"
+          ],
+          "requires": [
+            "cat"
+          ]
+        },
+        {
+          "name": "🌡 Temperaturen",
+          "description": "CPU-, GPU- und Boardtemperaturen",
+          "type": "READ",
+          "cmd": "sensors",
+          "argv": [
+            "sensors"
+          ],
+          "requires": [
+            "sensors"
+          ],
+          "check": "TEMPERATURE"
+        },
+        {
+          "name": "🎛 Scheduler-Statistik",
+          "description": "vmstat-Kurztest: Prozesse, Kontextwechsel, I/O-Wait",
+          "type": "READ",
+          "cmd": "vmstat 1 4",
+          "argv": [
+            "vmstat",
+            "1",
+            "4"
+          ],
+          "requires": [
+            "vmstat"
+          ],
+          "timeout_s": 15
+        }
+      ]
+    },
+    "PROCESSES": {
+      "icon": "⚙",
+      "order": 50,
+      "entries": [
+        {
+          "name": "🔥 Top CPU",
+          "description": "Prozesse mit höchster CPU-Last",
+          "type": "READ",
+          "cmd": "ps aux --sort=-%cpu",
+          "argv": [
+            "ps",
+            "aux",
+            "--sort=-%cpu"
+          ],
+          "requires": [
+            "ps"
+          ]
+        },
+        {
+          "name": "🧠 Top RAM",
+          "description": "Prozesse mit höchstem Speicherverbrauch",
+          "type": "READ",
+          "cmd": "ps aux --sort=-%mem",
+          "argv": [
+            "ps",
+            "aux",
+            "--sort=-%mem"
+          ],
+          "requires": [
+            "ps"
+          ]
+        },
+        {
+          "name": "⚙ Alle Prozesse",
+          "description": "Vollständige Prozessliste mit Spaltenüberschriften",
+          "type": "READ",
+          "cmd": "ps -eo pid,ppid,user,stat,%cpu,%mem,etimes,comm --sort=-%cpu",
+          "argv": [
+            "ps",
+            "-eo",
+            "pid,ppid,user,stat,%cpu,%mem,etimes,comm",
+            "--sort=-%cpu"
+          ],
+          "requires": [
+            "ps"
+          ]
+        },
+        {
+          "name": "🌳 Prozessbaum",
+          "description": "Prozesshierarchie als Baum",
+          "type": "READ",
+          "cmd": "pstree -ap",
+          "argv": [
+            "pstree",
+            "-ap"
+          ],
+          "requires": [
+            "pstree"
+          ]
+        },
+        {
+          "name": "🔎 Prozess-Suche",
+          "description": "Sucht im Suchfeld oben nach einem Prozessnamen",
+          "type": "READ",
+          "cmd": "ps -eo pid,user,%cpu,%mem,stat,comm  (Ausgabe wird gefiltert)",
+          "argv": [
+            "ps",
+            "-eo",
+            "pid,user,%cpu,%mem,stat,comm"
+          ],
+          "requires": [
+            "ps"
+          ],
+          "prompt": "Prozessnamen (Teil des Namens)",
+          "prompt_token": "<query>",
+          "filter": "<query>",
+          "example": "firefox"
+        },
+        {
+          "name": "👤 Eigene Prozesse",
+          "description": "Nur Prozesse des angemeldeten Benutzers",
+          "type": "READ",
+          "cmd": "ps -u {user} -o pid,%cpu,%mem,stat,comm",
+          "argv": [
+            "ps",
+            "-u",
+            "{user}",
+            "-o",
+            "pid,%cpu,%mem,stat,comm"
+          ],
+          "requires": [
+            "ps"
+          ]
+        }
+      ]
+    },
+    "NETWORK": {
+      "icon": "🌐",
+      "order": 60,
+      "entries": [
+        {
+          "name": "🌐 Interfaces",
+          "description": "Alle Netzwerkschnitten mit Status",
+          "type": "READ",
+          "cmd": "ip -brief address",
+          "argv": [
+            "ip",
+            "-brief",
+            "address"
+          ],
+          "requires": [
+            "ip"
+          ],
+          "check": "NETWORK"
+        },
+        {
+          "name": "📡 IP-Adressen (detail)",
+          "description": "Adressen, MAC, MTU, Zustand je Interface",
+          "type": "READ",
+          "cmd": "ip address show",
+          "argv": [
+            "ip",
+            "address",
+            "show"
+          ],
+          "requires": [
+            "ip"
+          ]
+        },
+        {
+          "name": "🛣 Routing & Gateway",
+          "description": "Routen, Standardgateway, Schnittstellen",
+          "type": "READ",
+          "cmd": "ip route show",
+          "argv": [
+            "ip",
+            "route",
+            "show"
+          ],
+          "requires": [
+            "ip"
+          ]
+        },
+        {
+          "name": "📡 Funk-Netzwerke",
+          "description": "Sichtbare WLANs in der Umgebung",
+          "type": "READ",
+          "cmd": "nmcli device wifi list --rescan yes",
+          "argv": [
+            "nmcli",
+            "device",
+            "wifi",
+            "list",
+            "--rescan",
+            "yes"
+          ],
+          "requires": [
+            "nmcli"
+          ],
+          "timeout_s": 25
+        },
+        {
+          "name": "🔗 NetworkManager-Status",
+          "description": "Verbindungen, Geräte, genereller Zustand",
+          "type": "READ",
+          "cmd": "nmcli general status",
+          "argv": [
+            "nmcli",
+            "general",
+            "status"
+          ],
+          "requires": [
+            "nmcli"
+          ],
+          "check": "NETWORK"
+        },
+        {
+          "name": "🌍 DNS-Server",
+          "description": "Aktive DNS-Konfiguration des Systems",
+          "type": "READ",
+          "cmd": "resolvectl status",
+          "argv": [
+            "resolvectl",
+            "status"
+          ],
+          "requires": [
+            "resolvectl"
+          ]
+        },
+        {
+          "name": "📄 resolv.conf",
+          "description": "Inhalt der Datei /etc/resolv.conf",
+          "type": "READ",
+          "cmd": "cat /etc/resolv.conf",
+          "argv": [
+            "cat",
+            "/etc/resolv.conf"
+          ],
+          "requires": [
+            "cat"
+          ]
+        },
+        {
+          "name": "📶 Verbindungstest",
+          "description": "Erreichbarkeit eines Ziels (nur ein Ping, nichts wird geändert)",
+          "type": "TERM",
+          "cmd": "ping -c 3 -W 2 1.1.1.1",
+          "requires": [
+            "ping"
+          ]
+        },
+        {
+          "name": "🌐 DNS-Test",
+          "description": "Namensauflösung im Terminal prüfen",
+          "type": "TERM",
+          "cmd": "getent hosts linuxmint.com",
+          "requires": [
+            "getent"
+          ]
+        }
+      ]
+    },
+    "PORTS": {
+      "icon": "🔌",
+      "order": 70,
+      "entries": [
+        {
+          "name": "🔌 Offene Ports",
+          "description": "Lauschende TCP/UDP-Ports mit Prozess",
+          "type": "READ",
+          "cmd": "ss -tulpn",
+          "argv": [
+            "ss",
+            "-tulpn"
+          ],
+          "requires": [
+            "ss"
+          ]
+        },
+        {
+          "name": "📡 Listening TCP",
+          "description": "Nur lauschende TCP-Sockets",
+          "type": "READ",
+          "cmd": "ss -ltnp",
+          "argv": [
+            "ss",
+            "-ltnp"
+          ],
+          "requires": [
+            "ss"
+          ]
+        },
+        {
+          "name": "🔗 Aktive Verbindungen",
+          "description": "Bestehende ausgehende TCP-Verbindungen",
+          "type": "READ",
+          "cmd": "ss -tnp state established",
+          "argv": [
+            "ss",
+            "-tnp",
+            "state",
+            "established"
+          ],
+          "requires": [
+            "ss"
+          ]
+        },
+        {
+          "name": "📊 Verbindungsstatistik",
+          "description": "Zusammenfassung der Socket-Zustände",
+          "type": "READ",
+          "cmd": "ss -s",
+          "argv": [
+            "ss",
+            "-s"
+          ],
+          "requires": [
+            "ss"
+          ]
+        },
+        {
+          "name": "🧾 Port-Suche",
+          "description": "Filtert offene Ports - Suchbegriff im Suchfeld oben",
+          "type": "READ",
+          "cmd": "ss -tulpn  (Ausgabe wird gefiltert)",
+          "argv": [
+            "ss",
+            "-tulpn"
+          ],
+          "requires": [
+            "ss"
+          ],
+          "prompt": "Port oder Dienst (z.B. 22 oder ssh)",
+          "prompt_token": "<query>",
+          "filter": "<query>",
+          "example": "22"
+        }
+      ]
+    },
+    "UPDATES": {
+      "icon": "📦",
+      "order": 80,
+      "entries": [
+        {
+          "name": "📦 Update-Status",
+          "description": "Neueste APT-Paketlisten - das Alter zeigt, wann zuletzt aktualisiert wurde",
+          "type": "READ",
+          "cmd": "ls -lt --time-style=long-iso /var/lib/apt/lists",
+          "argv": [
+            "ls",
+            "-lt",
+            "--time-style=long-iso",
+            "/var/lib/apt/lists"
+          ],
+          "requires": [
+            "ls"
+          ],
+          "check": "UPDATES",
+          "timeout_s": 10
+        },
+        {
+          "name": "📋 Verfügbare Updates",
+          "description": "Liste der aktualisierbaren Pakete (nur lesend)",
+          "type": "READ",
+          "cmd": "apt list --upgradable",
+          "argv": [
+            "apt",
+            "list",
+            "--upgradable"
+          ],
+          "requires": [
+            "apt"
+          ],
+          "check": "UPDATES"
+        },
+        {
+          "name": "🔎 Sicherheitsupdates",
+          "description": "Simulierte Upgradepfade, ohne Root und ohne Änderung",
+          "type": "READ",
+          "cmd": "apt-get -s upgrade",
+          "argv": [
+            "apt-get",
+            "-s",
+            "upgrade"
+          ],
+          "requires": [
+            "apt-get"
+          ]
+        },
+        {
+          "name": "🗃 Paketquellen",
+          "description": "Konfigurierte APT-Quellen",
+          "type": "READ",
+          "cmd": "grep -Rhv '^#' /etc/apt/sources.list /etc/apt/sources.list.d/",
+          "argv": [
+            "grep",
+            "-Rhv",
+            "^#",
+            "/etc/apt/sources.list",
+            "/etc/apt/sources.list.d/"
+          ],
+          "requires": [
+            "grep"
+          ]
+        },
+        {
+          "name": "📥 Update-Index (Terminal)",
+          "description": "Nur zum Kopieren: 'sudo apt update' bewusst im Terminal ausführen",
+          "type": "COPY",
+          "cmd": "sudo apt update",
+          "requires": [
+            "apt"
+          ]
+        },
+        {
+          "name": "⬆ System-Upgrade (Terminal)",
+          "description": "Nur zum Kopieren: 'sudo apt upgrade' bewusst im Terminal ausführen",
+          "type": "COPY",
+          "cmd": "sudo apt upgrade",
+          "requires": [
+            "apt"
+          ]
+        }
+      ]
+    },
+    "CLEANUP": {
+      "icon": "🧹",
+      "order": 90,
+      "entries": [
+        {
+          "name": "📦 APT-Cache",
+          "description": "Größe des Paket-Caches (nur Analyse)",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo du -sh /var/cache/apt/archives",
+          "requires": [
+            "du"
+          ],
+          "allow_rc": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "📜 Journal-Speicher",
+          "description": "Wie viel Platz das Systemjournal belegt",
+          "type": "READ",
+          "cmd": "journalctl --disk-usage",
+          "argv": [
+            "journalctl",
+            "--disk-usage"
+          ],
+          "requires": [
+            "journalctl"
+          ]
+        },
+        {
+          "name": "📁 Temporäre Dateien",
+          "description": "Belegung von /tmp",
+          "type": "READ",
+          "cmd": "du -sh /tmp",
+          "argv": [
+            "du",
+            "-sh",
+            "/tmp"
+          ],
+          "requires": [
+            "du"
+          ],
+          "allow_rc": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "📋 Log-Verzeichnis",
+          "description": "Belegung von /var/log",
+          "type": "READ",
+          "cmd": "du -sh /var/log",
+          "argv": [
+            "du",
+            "-sh",
+            "/var/log"
+          ],
+          "requires": [
+            "du"
+          ],
+          "allow_rc": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "🗑 Papierkorb",
+          "description": "Belegung des Benutzer-Papierkorbs (nur Analyse)",
+          "type": "READ",
+          "cmd": "du -sh {home}/.local/share/Trash",
+          "argv": [
+            "du",
+            "-sh",
+            "{home}/.local/share/Trash"
+          ],
+          "requires": [
+            "du"
+          ],
+          "allow_rc": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "🖼 Vorschaubilder",
+          "description": "Belegung des Thumbnail-Caches (nur Analyse)",
+          "type": "READ",
+          "cmd": "du -sh {home}/.cache/thumbnails",
+          "argv": [
+            "du",
+            "-sh",
+            "{home}/.cache/thumbnails"
+          ],
+          "requires": [
+            "du"
+          ],
+          "allow_rc": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "🐘 Große Dateien im Home",
+          "description": "Dateien über 300 MB im persönlichen Verzeichnis",
+          "type": "READ",
+          "cmd": "find {home} -xdev -type f -size +300M",
+          "argv": [
+            "find",
+            "{home}",
+            "-xdev",
+            "-type",
+            "f",
+            "-size",
+            "+300M"
+          ],
+          "requires": [
+            "find"
+          ],
+          "timeout_s": 30
+        },
+        {
+          "name": "🧽 Paket-Cache leeren (Terminal)",
+          "description": "Nur zum Kopieren: 'sudo apt clean' bewusst im Terminal ausführen",
+          "type": "COPY",
+          "cmd": "sudo apt clean",
+          "requires": [
+            "apt"
+          ]
+        },
+        {
+          "name": "🧹 Journal bereinigen (Terminal)",
+          "description": "Nur zum Kopieren: löscht alte Journaleinträge, bewusst im Terminal ausführen",
+          "type": "COPY",
+          "cmd": "sudo journalctl --vacuum-time=7d",
+          "requires": [
+            "journalctl"
+          ]
+        }
+      ]
+    },
+    "LOGS": {
+      "icon": "📜",
+      "order": 100,
+      "entries": [
+        {
+          "name": "❌ Fehler (aktueller Boot)",
+          "description": "Journal-Einträge der Priorität err seit dem letzten Start (letzte 400)",
+          "type": "READ",
+          "cmd": "journalctl -p err -b -n 400 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-p",
+            "err",
+            "-b",
+            "-n",
+            "400",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "timeout_s": 20
+        },
+        {
+          "name": "⚠ Warnungen (aktueller Boot)",
+          "description": "Journal ab Priorität warning seit dem letzten Start (letzte 400)",
+          "type": "READ",
+          "cmd": "journalctl -p warning -b -n 400 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-p",
+            "warning",
+            "-b",
+            "-n",
+            "400",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "timeout_s": 20
+        },
+        {
+          "name": "🐧 Kernel-Log",
+          "description": "Kernelmeldungen seit dem letzten Start (letzte 400)",
+          "type": "READ",
+          "cmd": "journalctl -k -b -n 400 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-k",
+            "-b",
+            "-n",
+            "400",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "timeout_s": 20
+        },
+        {
+          "name": "🚀 Boot-Log",
+          "description": "Meldungen der letzten 300 Zeilen des aktuellen Boots",
+          "type": "READ",
+          "cmd": "journalctl -b -n 300 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-b",
+            "-n",
+            "300",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "timeout_s": 20
+        },
+        {
+          "name": "📅 Boot-Liste",
+          "description": "Alle protokollierten Systemstarts",
+          "type": "READ",
+          "cmd": "journalctl --list-boots --no-pager",
+          "argv": [
+            "journalctl",
+            "--list-boots",
+            "--no-pager"
+          ],
+          "requires": [
+            "journalctl"
+          ]
+        },
+        {
+          "name": "🔎 Log-Suche",
+          "description": "Durchsucht das aktuelle Journal - Begriff im Suchfeld",
+          "type": "READ",
+          "cmd": "journalctl -b -n 500 --no-pager  (Ausgabe wird gefiltert)",
+          "argv": [
+            "journalctl",
+            "-b",
+            "-n",
+            "500",
+            "--no-pager"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "prompt": "Suchbegriff im Journal",
+          "prompt_token": "<query>",
+          "filter": "<query>",
+          "example": "error",
+          "timeout_s": 20
+        },
+        {
+          "name": "🔍 Log-Fehlersuche",
+          "description": "Journal nach einem Begriff filtern (grep im Terminal)",
+          "type": "TERM",
+          "cmd": "journalctl -b --no-pager | grep -i <query>",
+          "requires": [
+            "journalctl"
+          ]
+        },
+        {
+          "name": "📖 Live-Mitschnitt (Terminal)",
+          "description": "Öffnet 'journalctl -f' - dort mit Strg+C beenden",
+          "type": "TERM",
+          "cmd": "journalctl -f",
+          "requires": [
+            "journalctl"
+          ]
+        }
+      ]
+    },
+    "SERVICES": {
+      "icon": "🧰",
+      "order": 110,
+      "entries": [
+        {
+          "name": "🧰 Laufende Dienste",
+          "description": "Alle aktiven systemd-Dienste",
+          "type": "READ",
+          "cmd": "systemctl list-units --type=service --state=running --no-pager --no-legend",
+          "argv": [
+            "systemctl",
+            "list-units",
+            "--type=service",
+            "--state=running",
+            "--no-pager",
+            "--no-legend"
+          ],
+          "requires": [
+            "systemctl"
+          ],
+          "check": "SERVICES"
+        },
+        {
+          "name": "❌ Fehlgeschlagene Dienste",
+          "description": "Dienste im Fehlerzustand (sehr wichtig)",
+          "type": "READ",
+          "cmd": "systemctl --failed --no-pager",
+          "argv": [
+            "systemctl",
+            "--failed",
+            "--no-pager"
+          ],
+          "requires": [
+            "systemctl"
+          ],
+          "check": "SERVICES"
+        },
+        {
+          "name": "⏰ Zeitplaner",
+          "description": "Aktive Timer und Cronjobs des Systems",
+          "type": "READ",
+          "cmd": "systemctl list-timers --no-pager",
+          "argv": [
+            "systemctl",
+            "list-timers",
+            "--no-pager"
+          ],
+          "requires": [
+            "systemctl"
+          ]
+        },
+        {
+          "name": "📊 Systemzustand",
+          "description": "Zusammenfassung: laufend, fehlgeschlagen, Tasks",
+          "type": "READ",
+          "cmd": "systemctl list-units --no-pager --no-legend",
+          "argv": [
+            "systemctl",
+            "list-units",
+            "--no-pager",
+            "--no-legend"
+          ],
+          "requires": [
+            "systemctl"
+          ]
+        },
+        {
+          "name": "🔎 Dienst-Status",
+          "description": "Status eines Dienstes - Name im Suchfeld oben",
+          "type": "READ",
+          "cmd": "systemctl status <query>",
+          "argv": [
+            "systemctl",
+            "status",
+            "--no-pager",
+            "--full",
+            "<query>"
+          ],
+          "requires": [
+            "systemctl"
+          ],
+          "prompt": "Dienstname (z.B. cups)",
+          "prompt_token": "<query>",
+          "example": "cups"
+        },
+        {
+          "name": "📄 Dienst-Log",
+          "description": "Journal eines Dienstes - Name im Suchfeld oben",
+          "type": "READ",
+          "cmd": "journalctl -u <query> -n 200 --no-pager",
+          "argv": [
+            "journalctl",
+            "-u",
+            "<query>",
+            "-n",
+            "200",
+            "--no-pager"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "prompt": "Dienstname (z.B. cups)",
+          "prompt_token": "<query>",
+          "example": "cups",
+          "timeout_s": 15
+        },
+        {
+          "name": "▶ Dienst starten",
+          "description": "ADMIN: öffnet 'sudo systemctl start' im Terminal",
+          "type": "ADMIN",
+          "unit": "<query>",
+          "cmd": "sudo systemctl start <query>",
+          "admin_command": "sudo systemctl start <query>",
+          "requires": [
+            "systemctl"
+          ],
+          "prompt": "Dienstname (z.B. cups)",
+          "prompt_token": "<query>",
+          "example": "cups"
+        },
+        {
+          "name": "⏹ Dienst stoppen",
+          "description": "ADMIN: öffnet 'sudo systemctl stop' im Terminal",
+          "type": "ADMIN",
+          "unit": "<query>",
+          "cmd": "sudo systemctl stop <query>",
+          "admin_command": "sudo systemctl stop <query>",
+          "requires": [
+            "systemctl"
+          ],
+          "prompt": "Dienstname (z.B. cups)",
+          "prompt_token": "<query>",
+          "example": "cups"
+        },
+        {
+          "name": "🔄 Dienst neu starten",
+          "description": "ADMIN: öffnet 'sudo systemctl restart' im Terminal",
+          "type": "ADMIN",
+          "unit": "<query>",
+          "cmd": "sudo systemctl restart <query>",
+          "admin_command": "sudo systemctl restart <query>",
+          "requires": [
+            "systemctl"
+          ],
+          "prompt": "Dienstname (z.B. cups)",
+          "prompt_token": "<query>",
+          "example": "cups"
+        },
+        {
+          "name": "🔒 Kritische Dienste",
+          "description": "Die vom System Deck geschützten Systemdienste (nur Information)",
+          "type": "COPY",
+          "cmd": "GESPERRT für das System Deck: ssh, sshd, NetworkManager, display-manager, cups, cron, dbus, polkit, accounts-daemon, upower, PackageKit, systemd-*, bluetooth, avahi-daemon. Änderungen ausschließlich bewusst im Terminal."
+        }
+      ]
+    },
+    "SECURITY": {
+      "icon": "🛡",
+      "order": 120,
+      "entries": [
+        {
+          "name": "👥 Benutzer",
+          "description": "Alle Benutzerkonten des Systems",
+          "type": "READ",
+          "cmd": "getent passwd",
+          "argv": [
+            "getent",
+            "passwd"
+          ],
+          "requires": [
+            "getent"
+          ],
+          "filter_re": ":[0-9]{4}:"
+        },
+        {
+          "name": "👥 Gruppen",
+          "description": "Alle Benutzergruppen",
+          "type": "READ",
+          "cmd": "getent group",
+          "argv": [
+            "getent",
+            "group"
+          ],
+          "requires": [
+            "getent"
+          ]
+        },
+        {
+          "name": "🔐 sudo-Rechte (Terminal)",
+          "description": "Zeigt die eigenen sudo-Rechte - benötigt Root",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo -l",
+          "requires": [
+            "sudo"
+          ]
+        },
+        {
+          "name": "🕘 Anmeldeverlauf",
+          "description": "Letzte Anmeldungen am System",
+          "type": "READ",
+          "cmd": "last -n 25",
+          "argv": [
+            "last",
+            "-n",
+            "25"
+          ],
+          "requires": [
+            "last"
+          ]
+        },
+        {
+          "name": "🚫 Fehlgeschlagene Logins",
+          "description": "Fehlgeschlagene Anmeldeversuche (benötigt Root)",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo lastb -n 25",
+          "requires": [
+            "lastb"
+          ]
+        },
+        {
+          "name": "⚠ SUID-Dateien",
+          "description": "Dateien mit erweiterten Rechten (Sicherheitsrelevant)",
+          "type": "READ",
+          "cmd": "find /usr /bin /sbin /etc /home /opt -xdev -perm -4000 -type f",
+          "argv": [
+            "find",
+            "/usr",
+            "/bin",
+            "/sbin",
+            "/etc",
+            "/home",
+            "/opt",
+            "-xdev",
+            "-perm",
+            "-4000",
+            "-type",
+            "f"
+          ],
+          "requires": [
+            "find"
+          ],
+          "timeout_s": 25,
+          "allow_rc": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "🌐 Offene Ports",
+          "description": "Von außen erreichbare Dienste",
+          "type": "READ",
+          "cmd": "ss -tulpn",
+          "argv": [
+            "ss",
+            "-tulpn"
+          ],
+          "requires": [
+            "ss"
+          ]
+        },
+        {
+          "name": "🛡 Sicherheitsmeldungen",
+          "description": "Fehlermeldungen mit Sicherheitsbezug aus dem Journal",
+          "type": "READ",
+          "cmd": "journalctl -b -p err -n 400 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-b",
+            "-p",
+            "err",
+            "-n",
+            "400",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "filter_re": "auth|login|sudo|denied|pam|apparmor",
+          "timeout_s": 20
+        }
+      ]
+    },
+    "FIREWALL": {
+      "icon": "🔥",
+      "order": 130,
+      "entries": [
+        {
+          "name": "🔥 Firewall-Status",
+          "description": "ufw-Status - für Details wird Root benötigt",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo ufw status verbose",
+          "requires": [
+            "ufw"
+          ]
+        },
+        {
+          "name": "📋 Firewall-Regeln",
+          "description": "Alle Regeln mit Nummerierung - nur lesend",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo ufw status numbered",
+          "requires": [
+            "ufw"
+          ]
+        },
+        {
+          "name": "⚙ Firewall-Dienst",
+          "description": "Ist der Firewall-Dienst aktiv? (ohne Root)",
+          "type": "READ",
+          "cmd": "systemctl is-active ufw firewalld",
+          "argv": [
+            "systemctl",
+            "is-active",
+            "ufw"
+          ],
+          "requires": [
+            "systemctl"
+          ],
+          "check": "FIREWALL"
+        },
+        {
+          "name": "🧾 Firewall-Log",
+          "description": "Journalmeldungen der Firewall",
+          "type": "READ",
+          "cmd": "journalctl -u ufw --no-pager -n 100",
+          "argv": [
+            "journalctl",
+            "-u",
+            "ufw",
+            "--no-pager",
+            "-n",
+            "100"
+          ],
+          "requires": [
+            "journalctl"
+          ]
+        },
+        {
+          "name": "🚫 Regeländerungen",
+          "description": "Das System Deck ändert NIEMALS Firewall-Regeln",
+          "type": "COPY",
+          "cmd": "Regeländerungen nimmt das System Deck nicht vor. Öffne die Firewall selbst im Terminal (sudo ufw status numbered), dort wird jede Änderung einzeln bestätigt."
+        }
+      ]
+    },
+    "SENSORS": {
+      "icon": "🌡",
+      "order": 140,
+      "entries": [
+        {
+          "name": "🌡 Alle Sensoren",
+          "description": "Temperaturen, Lüfter, Spannungen",
+          "type": "READ",
+          "cmd": "sensors",
+          "argv": [
+            "sensors"
+          ],
+          "requires": [
+            "sensors"
+          ],
+          "check": "TEMPERATURE"
+        },
+        {
+          "name": "🌡 Temperaturen (roh)",
+          "description": "Messwerte in Millikelvin - ideal zum Filtern",
+          "type": "READ",
+          "cmd": "sensors -u",
+          "argv": [
+            "sensors",
+            "-u"
+          ],
+          "requires": [
+            "sensors"
+          ]
+        },
+        {
+          "name": "🌡 CPU-Temperaturen",
+          "description": "Zum Kopieren oder Filtern gedacht (z.B. 'core')",
+          "type": "READ",
+          "cmd": "sensors  (Ausgabe wird gefiltert)",
+          "argv": [
+            "sensors"
+          ],
+          "requires": [
+            "sensors"
+          ],
+          "prompt": "Sensorbegriff (z.B. core, temp)",
+          "prompt_token": "<query>",
+          "filter": "<query>",
+          "example": "core"
+        },
+        {
+          "name": "🌀 Lüfter",
+          "description": "Lüfterdrehzahlen",
+          "type": "READ",
+          "cmd": "sensors  (Ausgabe wird nach 'fan' gefiltert)",
+          "argv": [
+            "sensors"
+          ],
+          "requires": [
+            "sensors"
+          ],
+          "filter": "fan"
+        }
+      ]
+    },
+    "GPU": {
+      "icon": "🎮",
+      "order": 150,
+      "entries": [
+        {
+          "name": "🎮 GPU-Modell",
+          "description": "Grafikkarte aus der PCI-Auflistung",
+          "type": "READ",
+          "cmd": "lspci -nn  (Ausgabe wird gefiltert)",
+          "argv": [
+            "lspci",
+            "-nn"
+          ],
+          "requires": [
+            "lspci"
+          ],
+          "filter_re": "vga|3d|display"
+        },
+        {
+          "name": "🔌 GPU-Treiber",
+          "description": "Verwendeter Kernel-Treiber der Grafikkarte",
+          "type": "READ",
+          "cmd": "lspci -k  (Ausgabe wird gefiltert)",
+          "argv": [
+            "lspci",
+            "-k"
+          ],
+          "requires": [
+            "lspci"
+          ],
+          "filter_re": "vga|3d|display|Kernel driver|Kernel modules"
+        },
+        {
+          "name": "🖥 Anzeigegeräte (DRM)",
+          "description": "DRM-Knoten des Systems (unabhängig von der Kartennummer)",
+          "type": "READ",
+          "cmd": "find /sys/class/drm -maxdepth 2 -name 'card*'",
+          "argv": [
+            "find",
+            "/sys/class/drm",
+            "-maxdepth",
+            "2",
+            "-name",
+            "card*"
+          ],
+          "requires": [
+            "cat"
+          ],
+          "timeout_s": 10
+        },
+        {
+          "name": "📊 NVIDIA (falls vorhanden)",
+          "description": "nvidia-smi: Modell, Treiber, VRAM, Auslastung, Temperatur",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "nvidia-smi",
+          "requires": [
+            "nvidia-smi"
+          ],
+          "package": "nvidia-utils"
+        },
+        {
+          "name": "🪟 OpenGL (falls vorhanden)",
+          "description": "glxinfo: Renderer, Version, Grafiktreiber",
+          "type": "TERM",
+          "cmd": "glxinfo -B",
+          "requires": [
+            "glxinfo"
+          ],
+          "package": "mesa-utils"
+        }
+      ]
+    },
+    "AUDIO": {
+      "icon": "🔊",
+      "order": 160,
+      "entries": [
+        {
+          "name": "🔊 Audio-Server",
+          "description": "PulseAudio/PipeWire: Server, Module, CPU-Last",
+          "type": "READ",
+          "cmd": "pactl info",
+          "argv": [
+            "pactl",
+            "info"
+          ],
+          "requires": [
+            "pactl"
+          ]
+        },
+        {
+          "name": "🔈 Ausgabegeräte",
+          "description": "Lautsprecher, Kopfhörer, Ausgänge",
+          "type": "READ",
+          "cmd": "pactl list short sinks",
+          "argv": [
+            "pactl",
+            "list",
+            "short",
+            "sinks"
+          ],
+          "requires": [
+            "pactl"
+          ]
+        },
+        {
+          "name": "🎤 Eingabegeräte",
+          "description": "Mikrofone und Aufnahmegeräte",
+          "type": "READ",
+          "cmd": "pactl list short sources",
+          "argv": [
+            "pactl",
+            "list",
+            "short",
+            "sources"
+          ],
+          "requires": [
+            "pactl"
+          ]
+        },
+        {
+          "name": "🔉 Standard-Ausgabe",
+          "description": "Welches Gerät ist als Ausgabe gesetzt",
+          "type": "READ",
+          "cmd": "pactl get-default-sink",
+          "argv": [
+            "pactl",
+            "get-default-sink"
+          ],
+          "requires": [
+            "pactl"
+          ]
+        },
+        {
+          "name": "🎛 Soundkarten (ALSA)",
+          "description": "Karten und Hardwaregeräte aus ALSA",
+          "type": "READ",
+          "cmd": "aplay -l",
+          "argv": [
+            "aplay",
+            "-l"
+          ],
+          "requires": [
+            "aplay"
+          ]
+        },
+        {
+          "name": "🔧 Volume im Terminal",
+          "description": "Öffnet den PulseAudio-Lautstärkemixer - nicht installiert",
+          "type": "TERM",
+          "cmd": "pavucontrol",
+          "requires": [
+            "pavucontrol"
+          ],
+          "package": "pavucontrol"
+        }
+      ]
+    },
+    "DIAGNOSTICS": {
+      "icon": "🩺",
+      "order": 170,
+      "entries": [
+        {
+          "name": "🩺 System-Check (Terminal)",
+          "description": "Öffnet den Systembericht von Mint - nicht installiert",
+          "type": "TERM",
+          "cmd": "gnome-system-report",
+          "requires": [
+            "gnome-system-report"
+          ],
+          "package": "gnome-system-report"
+        },
+        {
+          "name": "🩺 Fehlerdiagnose",
+          "description": "Alle Fehlermeldungen seit dem letzten Start",
+          "type": "READ",
+          "cmd": "journalctl -b -p err -n 400 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-b",
+            "-p",
+            "err",
+            "-n",
+            "400",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "timeout_s": 20
+        },
+        {
+          "name": "📦 Paketintegrität",
+          "description": "dpkg --audit meldet nur, es repariert nichts",
+          "type": "READ",
+          "cmd": "dpkg --audit",
+          "argv": [
+            "dpkg",
+            "--audit"
+          ],
+          "requires": [
+            "dpkg"
+          ]
+        },
+        {
+          "name": "⏱ Boot-Dauer",
+          "description": "Systemd-Analyse der Boot-Zeiten",
+          "type": "READ",
+          "cmd": "systemd-analyze blame",
+          "argv": [
+            "systemd-analyze",
+            "blame"
+          ],
+          "requires": [
+            "systemd-analyze"
+          ]
+        },
+        {
+          "name": "🗺 Boot-Kritisch",
+          "description": "Kritische Pfade des letzten Boots",
+          "type": "READ",
+          "cmd": "systemd-analyze critical-chain",
+          "argv": [
+            "systemd-analyze",
+            "critical-chain"
+          ],
+          "requires": [
+            "systemd-analyze"
+          ]
+        },
+        {
+          "name": "🔌 USB-Fehler (dmesg)",
+          "description": "Kernelmeldungen zu USB und Hardwarefehlern",
+          "type": "READ",
+          "cmd": "journalctl -k -b -p warning -n 400 --no-pager --no-hostname",
+          "argv": [
+            "journalctl",
+            "-k",
+            "-b",
+            "-p",
+            "warning",
+            "-n",
+            "400",
+            "--no-pager",
+            "--no-hostname"
+          ],
+          "requires": [
+            "journalctl"
+          ],
+          "timeout_s": 20
+        },
+        {
+          "name": "🔋 Firmware / BIOS",
+          "description": "Verfügbare Firmware-Updates - nur Abfrage, keine Installation",
+          "type": "TERM",
+          "sudo": true,
+          "cmd": "sudo fwupdmgr get-devices",
+          "requires": [
+            "fwupdmgr"
+          ],
+          "package": "fwupd"
+        },
+        {
+          "name": "📄 Bericht kopieren",
+          "description": "Kopiert den kompletten Systemstatus als Text (rein lesend)",
+          "type": "COPY",
+          "cmd": "uname -a; lsb_release -a; uptime; free -h; df -hT; lsblk; systemctl --failed; ip -brief address; sensors"
+        }
+      ]
+    }
+  }
+}
